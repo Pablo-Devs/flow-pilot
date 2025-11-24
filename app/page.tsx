@@ -1,8 +1,11 @@
-import React from 'react'
+import { caller } from "@/trpc/server"
 
-const Home = () => {
+const Home = async () => {
+  const users = await caller.getUsers()
   return (
-    <h1 className="">Home</h1>
+    <div className="min-h-screen min-w-screen flex items-center justify-center">
+      { JSON.stringify(users) }
+    </div>
   )
 }
 
