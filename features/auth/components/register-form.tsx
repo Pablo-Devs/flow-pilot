@@ -24,6 +24,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { authClient } from "@/lib/auth-client";
+import Image from "next/image"
 
 const registerSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -93,6 +94,7 @@ export function RegisterForm() {
                     className="w-full"
                     type="button"
                   >
+                    <Image src="/logos/github.svg" alt="Github" width={20} height={20} />
                     Continue with Github
                   </Button>
                   <Button
@@ -101,6 +103,7 @@ export function RegisterForm() {
                     className="w-full"
                     type="button"
                   >
+                    <Image src="/logos/google.svg" alt="Google" width={20} height={20} />
                     Continue with Google
                   </Button>
                 </div>
