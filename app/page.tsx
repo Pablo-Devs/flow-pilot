@@ -1,12 +1,13 @@
-import { caller } from "@/trpc/server"
+import { requireAuth } from "@/lib/auth-utils";
 
 const Home = async () => {
-  const users = await caller.getUsers()
+  await requireAuth();
+
   return (
     <div className="min-h-screen min-w-screen flex items-center justify-center">
-      { JSON.stringify(users) }
+      Proteccted Server Component
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
