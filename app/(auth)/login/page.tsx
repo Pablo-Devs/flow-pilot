@@ -4,7 +4,7 @@ import { requireUauth } from "@/lib/auth-utils";
 const Login = async () => {
   await requireUauth();
 
-  return <LoginForm />;
+  return <LoginForm />
 };
 
 export default Login;
