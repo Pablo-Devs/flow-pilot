@@ -1,0 +1,15 @@
+name: Vercel Preview Deployment
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel Preview Deployment
+        run: |
+          curl "$VERCEL_DEPLOY_HOOK_URL"
+        env:
+          VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
