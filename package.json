@@ -16,6 +16,7 @@
     "dev:all": "mprocs"
   },
   "dependencies": {
+    "@ai-sdk/google": "^2.0.43",
     "@hookform/resolvers": "^5.2.2",
     "@prisma/adapter-pg": "^7.0.0",
     "@prisma/client": "^7.0.0",
