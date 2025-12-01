@@ -37,9 +37,6 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
 
   const setEditor = useSetAtom(editorAtom);
 
-  console.log("Nodes returned from backend:", workflow.nodes);
-  console.log("Edges returned from backend:", workflow.edges);
-
   const [nodes, setNodes] = useState<Node[]>(workflow.nodes);
   const [edges, setEdges] = useState<Edge[]>(workflow.edges);
 
