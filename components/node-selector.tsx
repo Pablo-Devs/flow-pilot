@@ -92,7 +92,7 @@ export function NodeSelector({
         if (hasInitialTrigger) {
           return [newNode];
         }
-        return { ...nodes, newNode };
+        return [...nodes, newNode];
       });
       onOpenChange(false);
     },
