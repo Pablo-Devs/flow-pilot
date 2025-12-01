@@ -57,7 +57,7 @@ export function NodeSelector({
 
   const handleNodesSelect = useCallback(
     (selection: NodeTypeOption) => {
-      if (selection.type === "MANUAL_TRIGGER") {
+      if (selection.type === NodeType.MANUAL_TRIGGER) {
         const nodes = getNodes();
         const hasManualTrigger = nodes.some(
           (node) => node.type === NodeType.MANUAL_TRIGGER
@@ -78,8 +78,8 @@ export function NodeSelector({
         const centerY = window.innerHeight / 2;
 
         const flowPosition = screenToFlowPosition({
-          x: centerX + Math.random() - 0.5 * 200,
-          y: centerY + Math.random() - 0.5 * 200,
+          x: centerX + (Math.random() - 0.5) * 200,
+          y: centerY + (Math.random() - 0.5) * 200,
         });
 
         const newNode = {
