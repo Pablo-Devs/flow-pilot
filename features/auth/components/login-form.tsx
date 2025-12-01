@@ -24,7 +24,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { authClient } from "@/lib/auth-client";
-import Image from "next/image"
+import Image from "next/image";
 
 const loginSchema = z.object({
   email: z.email("Please enter a valid email address"),
@@ -44,13 +44,45 @@ export function LoginForm() {
     },
   });
 
+  const signInGithub = async () => {
+    await authClient.signIn.social(
+      {
+        provider: "github",
+      },
+      {
+        onSuccess: () => {
+          router.push("/");
+        },
+        onError: () => {
+          toast.error("Something went wrong");
+        },
+      }
+    );
+  };
+
+  const signInGoogle = async () => {
+    await authClient.signIn.social(
+      {
+        provider: "google",
+      },
+      {
+        onSuccess: () => {
+          router.push("/");
+        },
+        onError: () => {
+          toast.error("Something went wrong");
+        },
+      }
+    );
+  };
+
   const onSubmit = async (values: LoginFormValues) => {
     try {
       await authClient.signIn.email(
         {
           email: values.email,
           password: values.password,
-          callbackURL: "/"
+          callbackURL: "/",
         },
         {
           onSuccess: () => {
@@ -58,8 +90,11 @@ export function LoginForm() {
             router.push("/");
           },
           onError: (ctx) => {
-            toast.error(ctx.error.message ?? "Invalid email or password. Please try again.");
-          }
+            toast.error(
+              ctx.error.message ??
+                "Invalid email or password. Please try again."
+            );
+          },
         }
       );
     } catch (error) {
@@ -83,25 +118,37 @@ export function LoginForm() {
               <div className="grid gap-6">
                 <div className="flex flex-col gap-4">
                   <Button
+                    onClick={signInGithub}
                     variant="outline"
                     disabled={isPending}
                     className="w-full"
                     type="button"
                   >
-                    <Image src="/logos/github.svg" alt="Github" width={20} height={20}  />
+                    <Image
+                      src="/logos/github.svg"
+                      alt="Github"
+                      width={20}
+                      height={20}
+                    />
                     Continue with Github
                   </Button>
                   <Button
+                    onClick={signInGoogle}
                     variant="outline"
                     disabled={isPending}
                     className="w-full"
                     type="button"
                   >
-                    <Image src="/logos/google.svg" alt="Google" width={20} height={20}  />
+                    <Image
+                      src="/logos/google.svg"
+                      alt="Google"
+                      width={20}
+                      height={20}
+                    />
                     Continue with Google
                   </Button>
                 </div>
-                
+
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
                     <span className="w-full border-t" />
@@ -139,8 +186,8 @@ export function LoginForm() {
                       <FormItem>
                         <div className="flex items-center justify-between">
                           <FormLabel>Password</FormLabel>
-                          <Link 
-                            href="/forgot-password" 
+                          <Link
+                            href="/forgot-password"
                             className="text-sm underline underline-offset-4 hover:text-primary"
                           >
                             Forgot password?
@@ -164,7 +211,10 @@ export function LoginForm() {
                 </div>
                 <div className="text-center text-sm">
                   Don&apos;t have an account?{" "}
-                  <Link href="/signup" className="underline underline-offset-4 hover:text-primary">
+                  <Link
+                    href="/signup"
+                    className="underline underline-offset-4 hover:text-primary"
+                  >
                     Sign up
                   </Link>
                 </div>
