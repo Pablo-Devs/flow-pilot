@@ -24,16 +24,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { authClient } from "@/lib/auth-client";
-import Image from "next/image"
+import Image from "next/image";
 
-const registerSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string().min(1, "Please confirm your password")
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
+const registerSchema = z
+  .object({
+    email: z.string().email("Please enter a valid email address"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z.string().min(1, "Please confirm your password"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
@@ -49,6 +51,38 @@ export function RegisterForm() {
     },
   });
 
+  const signInGithub = async () => {
+    await authClient.signIn.social(
+      {
+        provider: "github",
+      },
+      {
+        onSuccess: () => {
+          router.push("/");
+        },
+        onError: () => {
+          toast.error("Something went wrong");
+        },
+      }
+    );
+  };
+
+  const signInGoogle = async () => {
+    await authClient.signIn.social(
+      {
+        provider: "google",
+      },
+      {
+        onSuccess: () => {
+          router.push("/");
+        },
+        onError: () => {
+          toast.error("Something went wrong");
+        },
+      }
+    );
+  };
+
   const onSubmit = async (values: RegisterFormValues) => {
     try {
       await authClient.signUp.email(
@@ -56,7 +90,7 @@ export function RegisterForm() {
           name: values.email,
           email: values.email,
           password: values.password,
-          callbackURL: "/"
+          callbackURL: "/",
         },
         {
           onSuccess: () => {
@@ -64,8 +98,10 @@ export function RegisterForm() {
             router.push("/");
           },
           onError: (ctx) => {
-            toast.error(ctx.error.message ?? "Registration failed. Please try again.");
-          }
+            toast.error(
+              ctx.error.message ?? "Registration failed. Please try again."
+            );
+          },
         }
       );
     } catch (error) {
@@ -89,25 +125,37 @@ export function RegisterForm() {
               <div className="grid gap-6">
                 <div className="flex flex-col gap-4">
                   <Button
+                    onClick={signInGithub}
                     variant="outline"
                     disabled={isPending}
                     className="w-full"
                     type="button"
                   >
-                    <Image src="/logos/github.svg" alt="Github" width={20} height={20} />
+                    <Image
+                      src="/logos/github.svg"
+                      alt="Github"
+                      width={20}
+                      height={20}
+                    />
                     Continue with Github
                   </Button>
                   <Button
+                    onClick={signInGoogle}
                     variant="outline"
                     disabled={isPending}
                     className="w-full"
                     type="button"
                   >
-                    <Image src="/logos/google.svg" alt="Google" width={20} height={20} />
+                    <Image
+                      src="/logos/google.svg"
+                      alt="Google"
+                      width={20}
+                      height={20}
+                    />
                     Continue with Google
                   </Button>
                 </div>
-                
+
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
                     <span className="w-full border-t" />
@@ -180,7 +228,10 @@ export function RegisterForm() {
                 </div>
                 <div className="text-center text-sm">
                   Already have an account?{" "}
-                  <Link href="/login" className="underline underline-offset-4 hover:text-primary">
+                  <Link
+                    href="/login"
+                    className="underline underline-offset-4 hover:text-primary"
+                  >
                     Login
                   </Link>
                 </div>
@@ -191,11 +242,17 @@ export function RegisterForm() {
       </Card>
       <p className="px-8 text-center text-sm text-muted-foreground">
         By clicking continue, you agree to our{" "}
-        <Link href="/terms" className="underline underline-offset-4 hover:text-primary">
+        <Link
+          href="/terms"
+          className="underline underline-offset-4 hover:text-primary"
+        >
           Terms of Service
         </Link>{" "}
         and{" "}
-        <Link href="/privacy" className="underline underline-offset-4 hover:text-primary">
+        <Link
+          href="/privacy"
+          className="underline underline-offset-4 hover:text-primary"
+        >
           Privacy Policy
         </Link>
         .
